@@ -78,3 +78,85 @@ export const SetTimeoutExample = () => {
         <button onClick={() => setCounter(counter + 1)}>counter+</button>*/}
         </>
 }
+
+export const ResetEffectExample = () => {
+    const [counter, setCounter] = useState(1)
+
+    console.log("Component rendered" + counter);
+
+    useEffect(() => {
+        console.log("Effect occured" + counter)
+
+        return () => {
+            console.log("RESET EFFECT" + counter);
+        }
+    }, [counter])
+
+    const increase = () => {setCounter(counter + 1)}
+    return <>
+        Hello, counter: {counter} <button onClick={increase}>+</button>
+        </>
+}
+
+export const KeysTrackerExample = () => {
+    const [text, setText] = useState('')
+
+    console.log('Component rendered with ' + text)
+
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) =>  {
+            console.log(e.key)
+            setText((state)=>state + e.key)
+        }
+
+        window.document.addEventListener('keypress', handler)
+        return () => {
+            window.document.removeEventListener('keypress', handler)
+        }
+    }, [])
+
+    return <>
+            Typed text: {text}
+        </>
+}
+
+
+export const SetIntervalExample = () => {
+    const [counter, setCounter] = useState(1)
+
+    console.log('SetIntervalExample')
+
+    useEffect(() => {
+        const intervalId = setInterval (()=> {
+            setCounter(state => state + 1)
+        }, 1000)
+
+        return () => {
+            clearInterval(intervalId)
+        }
+    }, [])
+
+    return <>
+        Hello, counter: {counter}
+        </>
+}
+
+export const SetTimeoutExample1 = () => {
+    const [text, setText] = useState('')
+
+    console.log('Component rendered with ' + text)
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            console.log("TIMEOUT EXPIRED")
+            setText('3 secconds passed')
+        }, 3000)
+        return() => {
+            clearTimeout(timeoutId)
+        }
+    }, [text])
+
+    return <>
+        text: {text}
+        </>
+}
